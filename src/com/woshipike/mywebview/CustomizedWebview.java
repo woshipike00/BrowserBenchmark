@@ -1,23 +1,29 @@
 package com.woshipike.mywebview;
 
+import com.woshipike.widget.ScrollWebview;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.animation.TranslateAnimation;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ScrollView;
+import android.widget.Scroller;
 import android.widget.TextView;
 
 public class CustomizedWebview extends Activity {
 	
 	private TextView URL;
 	private Button go;
-	private WebView webView;
+	private ScrollWebview webView;
 	private Context context;
 
 	@Override
@@ -32,7 +38,7 @@ public class CustomizedWebview extends Activity {
 	public void UIInit(){
 		URL=(TextView)findViewById(R.id.editText1);
 		go=(Button)findViewById(R.id.button1);
-		webView=(WebView)findViewById(R.id.webView1);
+		webView=(ScrollWebview)findViewById(R.id.webView1);
 		context=CustomizedWebview.this;
 		
 		go.setOnClickListener(new OnClickListener(){
@@ -40,7 +46,8 @@ public class CustomizedWebview extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				String url=URL.getText().toString();
+				//String url=URL.getText().toString();
+				String url="http://www.jd.com";
 				webView.loadUrl(url);
 				
 			}
@@ -61,13 +68,27 @@ public class CustomizedWebview extends Activity {
 				return true;
 			}
 			
+			public void onPageFinished(WebView view, String url) {
+		        super.onPageFinished(view, url);
+		        Log.v("webview", "page loaded!");
+
+		    } 
+			
+			
+			
 		});
 		
 		webView.setWebChromeClient(new WebChromeClient(){
 			public void onProgressChanged(WebView view, int progress) {
 			     // Activities and WebViews measure progress with different scales.
 			     // The progress meter will automatically disappear when we reach 100%
-			     ((CustomizedWebview)context).setProgress(progress * 1000);
+			     Log.v("webview",progress+"");
+			     if(progress==100){
+				        Scroller scroller=webView.getScroller();
+				        webView.settag();
+				        scroller.startScroll(0, 0, 0, 100, 4000);
+				        webView.postInvalidate();
+			     }
 			   }
 		});
 	}
