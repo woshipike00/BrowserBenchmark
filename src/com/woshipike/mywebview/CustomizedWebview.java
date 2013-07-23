@@ -87,7 +87,7 @@ public class CustomizedWebview extends Activity {
 				        Scroller scroller=webView.getScroller();
 				        webView.settag();
 				        scroller.startScroll(0, 0, 0, 100, 4000);
-				        webView.postInvalidate();
+				        //webView.postInvalidate();
 			     }
 			   }
 		});
