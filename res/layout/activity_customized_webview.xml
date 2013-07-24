@@ -22,12 +22,12 @@
 
     <Button
         android:id="@+id/button1"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/editText1"
         android:layout_alignBottom="@+id/editText1"
         android:layout_alignParentRight="true"
-        android:text="Button" />
+        android:text="@string/go" />
 
     <com.woshipike.widget.ScrollWebview
         android:id="@+id/webView1"

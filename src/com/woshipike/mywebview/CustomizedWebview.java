@@ -45,14 +45,13 @@ public class CustomizedWebview extends Activity {
 		UIInit();
 		WebviewConf();
 		
+		//parse the scroll xml file
 		try {
 			XMLReader reader=new XMLReader(context, "scrolltest");
 			list=reader.parse();
 		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -69,7 +68,6 @@ public class CustomizedWebview extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				String url=URL.getText().toString();
 				if(!url.matches("http.*"))
 					url="http://"+url;
@@ -88,7 +86,6 @@ public class CustomizedWebview extends Activity {
 
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				// TODO Auto-generated method stub
 				view.loadUrl(url);
 				return true;
 			}
@@ -100,12 +97,14 @@ public class CustomizedWebview extends Activity {
 		
 		webView.setWebChromeClient(new WebChromeClient(){
 			public void onProgressChanged(WebView view, int progress) {
-			     // Activities and WebViews measure progress with different scales.
-			     // The progress meter will automatically disappear when we reach 100%
-			     Log.v("webview",progress+"");
 			     if(progress==100){
-
-				      new Thread(new scrollTask(new MyHandler())).start();
+			    	 
+			    	 //solve the problem that some pages maybe loaded more than once
+			    	 if(view.getUrl().equals(webView.getoldurl()))
+			    		 return;
+			    	 webView.setoldurl(view.getUrl());
+				     //once the page is loaded, create a new thread to control the movement of the webview
+				     new Thread(new scrollTask(new MyHandler())).start();
 			     }
 			   }
 		});
@@ -121,20 +120,24 @@ public class CustomizedWebview extends Activity {
 	// handle scroll event
 	private class MyHandler extends Handler{
 
+		private Scroller scroller;
+		
+		public MyHandler(){
+			scroller=webView.getScroller();
+            scroller.setFinalX(0);
+            scroller.setFinalY(0);
+		}
+		
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 			int S=msg.arg1;
 			int V=msg.arg2;
-			Scroller scroller=webView.getScroller();
-			Log.v("webview", scroller.getFinalX()+", "+scroller.getFinalY());
-			Log.v("webview", scroller.getCurrX()+", "+scroller.getCurrY());
-
+			
 			int startx=scroller.getFinalX();
 			int starty=scroller.getFinalY();
+			//alow the webview to scroll
 		    webView.settag();
-		    Log.v("webview", startx+", "+starty+", "+startx+", "+(starty+S)+", "+Math.abs(S*1000/V));
 		    scroller.startScroll(startx, starty, 0, S, Math.abs(S*1000/V));
 		    webView.postInvalidate();
 		}
@@ -151,7 +154,7 @@ public class CustomizedWebview extends Activity {
 		public void run() {
 			
 			for (int i=0;i<list.size();i++){
-				Log.v("webview", System.currentTimeMillis()+"");
+				Log.v("webview", "list: "+i);
 				
 				int S=Integer.parseInt(list.get(i).split(",")[0]);
 				int T=Integer.parseInt(list.get(i).split(",")[1]);
@@ -168,7 +171,6 @@ public class CustomizedWebview extends Activity {
 					
 					Thread.sleep(T);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				

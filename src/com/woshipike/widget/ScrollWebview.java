@@ -17,13 +17,14 @@ public class ScrollWebview extends WebView{
 	private Context context;
 	private Scroller scroller;
 	private boolean tag=false;
+	private String oldurl;
 
 
 	public ScrollWebview(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 		this.context=context;
 		scroller=new Scroller(context);
+		oldurl="";
 
 	}
 	
@@ -41,7 +42,6 @@ public class ScrollWebview extends WebView{
 
 	@Override
 	public void computeScroll() {
-		// TODO Auto-generated method stub
 		if(tag && scroller.computeScrollOffset()) {
 			int x=scroller.getCurrX();
 	    	int y=scroller.getCurrY();
@@ -61,6 +61,14 @@ public class ScrollWebview extends WebView{
 	
 	public void settag(){
 		tag=true;
+	}
+	
+	public void setoldurl(String url){
+		oldurl=url;
+	}
+	
+	public String getoldurl(){
+		return oldurl;
 	}
 	
 
