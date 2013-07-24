@@ -70,8 +70,9 @@ public class CustomizedWebview extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				//String url=URL.getText().toString();
-				String url="http://www.jd.com";
+				String url=URL.getText().toString();
+				if(!url.matches("http.*"))
+					url="http://"+url;
 				webView.loadUrl(url);
 				
 			}
