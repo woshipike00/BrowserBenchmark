@@ -29,10 +29,10 @@ import android.widget.ScrollView;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-public class CustomizedWebview extends Activity {
+public class CustomizedWebview extends Activity { 
 	
 	private TextView URL;
-	private Button go;
+	private Button go; 
 	private ScrollWebview webView;
 	private Context context;
 	private ArrayList<String> list;
@@ -98,9 +98,12 @@ public class CustomizedWebview extends Activity {
 		
 		webView.setWebChromeClient(new WebChromeClient(){
 			public void onProgressChanged(WebView view, int progress) {
-			     if(progress==100){
+			     if(progress==100){  
 			    	 
 			    	 //solve the problem that some pages maybe loaded more than once
+			    	 if(view.getUrl()==null) return;
+			    	 //if(view.getUrl()==null) Log.v("webview", "view null");
+			    	 //if(webView.getoldurl()==null) Log.v("webview", "webview null");
 			    	 if(view.getUrl().equals(webView.getoldurl()))
 			    		 return;
 			    	 webView.setoldurl(view.getUrl());

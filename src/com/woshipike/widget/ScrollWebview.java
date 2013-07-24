@@ -33,6 +33,8 @@ public class ScrollWebview extends WebView{
 		super(context, set);
 		this.context=context;
 		scroller=new Scroller(context,new LinearInterpolator());
+		oldurl="";
+
 
 	}
 	
