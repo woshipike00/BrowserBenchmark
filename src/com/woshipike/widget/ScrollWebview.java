@@ -35,34 +35,31 @@ public class ScrollWebview extends WebView{
 	
 	
 
-	@Override
-	protected int computeVerticalScrollOffset() {
-		// TODO Auto-generated method stub
-		Log.v("webview", "computeoffset");
-		scrollBy(1, 1);
-		return super.computeVerticalScrollOffset();
-	}
+
 
 	@Override
 	public void computeScroll() {
 		// TODO Auto-generated method stub
-		//Log.v("webview", "***");
-		if(!tag) return;
-		int i=0;
-		while(scroller.computeScrollOffset()){
+		Log.v("webview", "computescroll "+tag);
+		if(tag && scroller.computeScrollOffset()) {
+			Log.v("webview", ""+tag);
 			int x=scroller.getCurrX();
 	    	int y=scroller.getCurrY();
-	    	//Log.v("webview", x+", "+y);
+	    	Log.v("webview", x+", "+y);
 	    	//Log.v("webview", getScrollX()+", "+getScrollY());
-
+            Log.v("webview", x+", "+y);
 	    	//scrollTo(x, y);
 	    	//postInvalidate();
-
-        }
-		i++;
+	    	scrollBy(1, 1);	
+		}
 		super.computeScroll();
 	}
+
 	
+	public void startcompute(){
+		computeVerticalScrollOffset();
+	}
+
 	
 	
 	public Scroller getScroller(){

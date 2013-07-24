@@ -70,7 +70,7 @@ public class CustomizedWebview extends Activity {
 			
 			public void onPageFinished(WebView view, String url) {
 		        super.onPageFinished(view, url);
-		        Log.v("webview", "page loaded!");
+		        //Log.v("webview", "page loaded!");
 
 		    } 
 			
@@ -84,10 +84,11 @@ public class CustomizedWebview extends Activity {
 			     // The progress meter will automatically disappear when we reach 100%
 			     Log.v("webview",progress+"");
 			     if(progress==100){
-				        Scroller scroller=webView.getScroller();
-				        webView.settag();
-				        scroller.startScroll(0, 0, 0, 100, 4000);
-				        //webView.postInvalidate();
+			    	 Log.v("webview", "page loaded!");
+				     Scroller scroller=webView.getScroller();
+				     webView.settag();
+				     scroller.startScroll(0, 0, 0, 100, 4000);
+				     webView.postInvalidate();
 			     }
 			   }
 		});
