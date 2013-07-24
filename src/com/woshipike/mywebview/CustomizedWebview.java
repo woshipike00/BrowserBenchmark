@@ -1,11 +1,21 @@
 package com.woshipike.mywebview;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.dom4j.DocumentException;
+
+import com.woshipike.utils.XMLReader;
 import com.woshipike.widget.ScrollWebview;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.util.TimeUtils;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
@@ -25,6 +35,7 @@ public class CustomizedWebview extends Activity {
 	private Button go;
 	private ScrollWebview webView;
 	private Context context;
+	private ArrayList<String> list;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +44,19 @@ public class CustomizedWebview extends Activity {
 		setContentView(R.layout.activity_customized_webview);
 		UIInit();
 		WebviewConf();
+		
+		try {
+			XMLReader reader=new XMLReader(context, "scrolltest");
+			list=reader.parse();
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	public void UIInit(){
@@ -70,12 +94,7 @@ public class CustomizedWebview extends Activity {
 			
 			public void onPageFinished(WebView view, String url) {
 		        super.onPageFinished(view, url);
-		        //Log.v("webview", "page loaded!");
-
-		    } 
-			
-			
-			
+		    } 			
 		});
 		
 		webView.setWebChromeClient(new WebChromeClient(){
@@ -84,21 +103,77 @@ public class CustomizedWebview extends Activity {
 			     // The progress meter will automatically disappear when we reach 100%
 			     Log.v("webview",progress+"");
 			     if(progress==100){
-			    	 Log.v("webview", "page loaded!");
-				     Scroller scroller=webView.getScroller();
-				     webView.settag();
-				     scroller.startScroll(0, 0, 0, 100, 4000);
-				     webView.postInvalidate();
+
+				      new Thread(new scrollTask(new MyHandler())).start();
 			     }
 			   }
 		});
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu) { 
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.customized_webview, menu);
 		return true;
 	}
+	
+	// handle scroll event
+	private class MyHandler extends Handler{
+
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+			int S=msg.arg1;
+			int V=msg.arg2;
+			Scroller scroller=webView.getScroller();
+			Log.v("webview", scroller.getFinalX()+", "+scroller.getFinalY());
+			Log.v("webview", scroller.getCurrX()+", "+scroller.getCurrY());
+
+			int startx=scroller.getFinalX();
+			int starty=scroller.getFinalY();
+		    webView.settag();
+		    Log.v("webview", startx+", "+starty+", "+startx+", "+(starty+S)+", "+Math.abs(S*1000/V));
+		    scroller.startScroll(startx, starty, 0, S, Math.abs(S*1000/V));
+		    webView.postInvalidate();
+		}
+		
+	}
+	
+	private class scrollTask implements Runnable {
+		private Handler myhandler;
+		
+		public scrollTask(Handler mHandler){
+			myhandler=mHandler;
+		}
+		
+		public void run() {
+			
+			for (int i=0;i<list.size();i++){
+				Log.v("webview", System.currentTimeMillis()+"");
+				
+				int S=Integer.parseInt(list.get(i).split(",")[0]);
+				int T=Integer.parseInt(list.get(i).split(",")[1]);
+				int V=Integer.parseInt(list.get(i).split(",")[2]);
+
+				
+				Message msg=Message.obtain();
+				msg.what=0;
+				msg.arg1=S;
+				msg.arg2=V;
+				myhandler.sendMessage(msg);
+				
+				try {
+					
+					Thread.sleep(T);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+				
+		}
+	};
 
 }

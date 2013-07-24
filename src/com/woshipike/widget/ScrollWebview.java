@@ -1,8 +1,12 @@
 package com.woshipike.widget;
 
+import java.util.Timer;
+
 import android.content.Context;
+import android.support.v4.util.TimeUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.animation.LinearInterpolator;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Scroller;
@@ -20,7 +24,6 @@ public class ScrollWebview extends WebView{
 		// TODO Auto-generated constructor stub
 		this.context=context;
 		scroller=new Scroller(context);
-		//Log.v("webview", "construct:1");
 
 	}
 	
@@ -28,8 +31,7 @@ public class ScrollWebview extends WebView{
 
 		super(context, set);
 		this.context=context;
-		scroller=new Scroller(context);
-		//Log.v("webview", "construct:2");
+		scroller=new Scroller(context,new LinearInterpolator());
 
 	}
 	
@@ -40,25 +42,16 @@ public class ScrollWebview extends WebView{
 	@Override
 	public void computeScroll() {
 		// TODO Auto-generated method stub
-		Log.v("webview", "computescroll "+tag);
 		if(tag && scroller.computeScrollOffset()) {
-			Log.v("webview", ""+tag);
 			int x=scroller.getCurrX();
 	    	int y=scroller.getCurrY();
-	    	Log.v("webview", x+", "+y);
-	    	//Log.v("webview", getScrollX()+", "+getScrollY());
-            Log.v("webview", x+", "+y);
-	    	//scrollTo(x, y);
-	    	//postInvalidate();
-	    	scrollBy(1, 1);	
+	    	scrollTo(x, y);
+	    	postInvalidate();
+	
 		}
 		super.computeScroll();
 	}
 
-	
-	public void startcompute(){
-		computeVerticalScrollOffset();
-	}
 
 	
 	

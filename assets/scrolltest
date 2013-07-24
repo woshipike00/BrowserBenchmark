@@ -1,0 +1,22 @@
+<test>
+    <round>
+		<S>100</S>
+		<T>3000</T>
+		<V>50</V>
+	</round>
+	<round>
+		<S>-100</S>
+		<T>3000</T>
+		<V>50</V>
+	</round>
+	<round>
+		<S>500</S>
+		<T>4000</T>
+		<V>400</V>
+	</round>
+	<round>
+		<S>-300</S>
+		<T>1500</T>
+		<V>300</V>
+	</round>
+</test>
