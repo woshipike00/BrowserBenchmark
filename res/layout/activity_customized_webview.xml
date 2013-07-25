@@ -20,7 +20,7 @@
         <requestFocus />
     </EditText>
 
-    <com.fujitsu.fnsk.Widget.ScrollWebview
+    <com.fujitsu.fnsk.bb.Widget.ScrollWebview
         android:id="@+id/webView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
