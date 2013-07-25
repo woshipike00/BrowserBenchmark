@@ -20,20 +20,28 @@
         <requestFocus />
     </EditText>
 
+    <com.fujitsu.fnsk.Widget.ScrollWebview
+        android:id="@+id/webView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@+id/editText1"
+        android:layout_below="@+id/button1" />
+
     <Button
         android:id="@+id/button1"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/editText1"
         android:layout_alignBottom="@+id/editText1"
-        android:layout_alignParentRight="true"
-        android:text="@string/go" />
+        android:layout_toLeftOf="@+id/button2"
+        android:text="@string/GO" />
 
-    <com.woshipike.widget.ScrollWebview
-        android:id="@+id/webView1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_below="@+id/button1" />
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/webView1"
+        android:layout_alignParentRight="true"
+        android:text="@string/start" />
 
 </RelativeLayout>
